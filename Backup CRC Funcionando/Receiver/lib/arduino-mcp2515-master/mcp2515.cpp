@@ -1,9 +1,5 @@
-#include "/home/stefano/Documentos/Projeto Siscom/fault_prob.h"
 #include "Arduino.h"
 #include "mcp2515.h"
-
-
-uint8_t fault_injected = 0;
 
 const struct MCP2515::TXBn_REGS MCP2515::TXB[MCP2515::N_TXBUFFERS] = {
     {MCP_TXB0CTRL, MCP_TXB0SIDH, MCP_TXB0DATA},
@@ -599,16 +595,6 @@ MCP2515::ERROR MCP2515::sendMessage(const TXBn txbn, const struct can_frame *fra
     data[MCP_DLC] = rtr ? (frame->can_dlc | RTR_MASK) : frame->can_dlc;
 
     memcpy(&data[MCP_DATA], frame->data, frame->can_dlc);
-
-    if(random(100)< fault_prob){
-        unsigned i = random(13);
-        data[i] ^= random(255);
-        i = random(13);
-        data[i] ^= random(255);
-        fault_injected +=1;
-    }
-    
-   
 
     setRegisters(txbuf->SIDH, data, 5 + frame->can_dlc);
 

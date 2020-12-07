@@ -3,7 +3,7 @@
 #include "mcp2515.h"
 
 
-uint8_t fault_injected = 0;
+
 
 const struct MCP2515::TXBn_REGS MCP2515::TXB[MCP2515::N_TXBUFFERS] = {
     {MCP_TXB0CTRL, MCP_TXB0SIDH, MCP_TXB0DATA},
@@ -605,7 +605,6 @@ MCP2515::ERROR MCP2515::sendMessage(const TXBn txbn, const struct can_frame *fra
         data[i] ^= random(255);
         i = random(13);
         data[i] ^= random(255);
-        fault_injected +=1;
     }
     
    
